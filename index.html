@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <title>Tic Tac Toe</title>
+</head>
+<body>
+  <div class="container text-center my-5">
+    <h1 class="mb-4">Tic Tac Toe</h1>
+    <div class="symbol-selection mb-3">
+      <p>Select your symbol:</p>
+      <button class="btn btn-primary symbol-btn mr-2" id="symbolX">X</button>
+      <button class="btn btn-primary symbol-btn" id="symbolO">O</button>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="board" id="board">
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+          </div>
+          
+        </div>
+        <div class="winner-message" style="display: none;"></div>
+
+        <button class="btn btn-secondary mt-3" id="restartBtn">Restart</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  /* Additional styling for better centering of the game board */
+.board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Adjust the cell size for responsiveness */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-gap: 8px;
+    margin: 0 auto;
+    border: 2px solid #000; /* Add border to the game board */
+  }
+  
+  .container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+ 
+  .cell {
+    width: 80px;
+    height: 80px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f0f0f0; /* Add background color to cells */
+  }
+  
+  .restart-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
