@@ -20,13 +20,19 @@ const winningCombos = [
 // Rest of your code...
 
 cells.forEach(cell => {
-  cell.addEventListener('click', handleClick, { once: true });
-});
-
-restartBtn.addEventListener('click', restartGame);
-symbolXBtn.addEventListener('click', () => chooseSymbol('X'));
-symbolOBtn.addEventListener('click', () => chooseSymbol('O'));
-
+    cell.addEventListener('click', handleClick, { once: true });
+    cell.addEventListener('touchstart', handleClick, { once: true });
+  });
+  
+  restartBtn.addEventListener('click', restartGame);
+  restartBtn.addEventListener('touchstart', restartGame);
+  
+  symbolXBtn.addEventListener('click', () => chooseSymbol('X'));
+  symbolXBtn.addEventListener('touchstart', () => chooseSymbol('X'));
+  
+  symbolOBtn.addEventListener('click', () => chooseSymbol('O'));
+  symbolOBtn.addEventListener('touchstart', () => chooseSymbol('O'));
+  
 function chooseSymbol(symbol) {
   currentPlayer = symbol;
   gameActive = true;
@@ -65,9 +71,9 @@ function handleClick(e) {
 }
 
 function checkWinner() {
-  for (const combo of winningCombos) {
-    const [a, b, c] = combo;
-    if (
+    for (const combo of winningCombos) {
+      const [a, b, c] = combo;
+      if (
         cells[a].textContent === currentPlayer &&
         cells[b].textContent === currentPlayer &&
         cells[c].textContent === currentPlayer
@@ -77,14 +83,39 @@ function checkWinner() {
         cells[b].classList.add('winner');
         cells[c].classList.add('winner');
         
-        const winnerMessage = document.querySelector('.winner-message');
-        winnerMessage.textContent = (currentPlayer === playerSymbol) ? 'You won!' : 'CPU won!';
-        winnerMessage.style.display = 'block';
-      
+        if (currentPlayer === playerSymbol) {
+          displayResult('You won!');
+          createConfetti(); // Create confetti particles
+        } else {
+          displayResult('CPU won!');
+        }
+  
         break;
       }
+    }
   }
-}
+  
+  function createConfetti() {
+    const confettiContainer = document.getElementById('confetti-container');
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = `${Math.random() * 100}vw`;
+      confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      confettiContainer.appendChild(confetti);
+    }
+  }
+  
+  function displayResult(message) {
+    const resultMessage = document.getElementById('resultMessage');
+    resultMessage.textContent = message;
+  
+    if (message === '') {
+      confetti.stop(); // Stop the confetti animation
+    }
+  }
+  
+  
 
 // ... Your previous code ...
 
@@ -150,30 +181,36 @@ function minimax(newBoard, player) {
     let bestMove = -1;
     let bestScore = -Infinity;
   
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i].textContent === '') {
-        cells[i].textContent = aiSymbol;
-        origBoard[i] = aiSymbol; // Update origBoard for AI move
-        const score = minimax(origBoard, playerSymbol).score; // Update minimax call
-        cells[i].textContent = '';
-        origBoard[i] = i; // Reset origBoard after evaluating move
+    // Add a delay before AI's move
+    setTimeout(() => {
+      for (let i = 0; i < cells.length; i++) {
+        if (cells[i].textContent === '') {
+          cells[i].textContent = aiSymbol;
+          cells[i].classList.add('ai-move'); // Add the class to highlight AI's move
+          origBoard[i] = aiSymbol; // Update origBoard for AI move
   
-        console.log(`Move ${i}: Score ${score}`); // Log the score for each move
+          const score = minimax(origBoard, playerSymbol).score; // Update minimax call
   
-        if (score > bestScore) {
-          bestScore = score;
-          bestMove = i;
+          cells[i].textContent = '';
+          cells[i].classList.remove('ai-move'); // Remove the class
+          origBoard[i] = i; // Reset origBoard after evaluating move
+  
+          if (score > bestScore) {
+            bestScore = score;
+            bestMove = i;
+          }
         }
       }
-    }
   
-    if (bestMove !== -1) {
-      cells[bestMove].textContent = aiSymbol;
-      origBoard[bestMove] = aiSymbol; // Update origBoard for AI move
-      checkWinner();
-      currentPlayer = playerSymbol; // Switch back to player's turn
-    }
+      if (bestMove !== -1) {
+        cells[bestMove].textContent = aiSymbol;
+        origBoard[bestMove] = aiSymbol; // Update origBoard for AI move
+        checkWinner();
+        currentPlayer = playerSymbol; // Switch back to player's turn
+      }
+    }, 650); // Delay in milliseconds (1 second in this example)
   }
+  
   
   // ... Rest of your code ...
   
@@ -182,9 +219,9 @@ function minimax(newBoard, player) {
   
   
   function restartGame() {
-    const winnerMessage = document.querySelector('.winner-message');
-    winnerMessage.style.display = 'none';
-    winnerMessage.textContent = '';
+    const winnerMessage = document.querySelector('.resultMessage');
+    resultMessage.style.display = 'none';
+    resultMessage.textContent = '';
   
     location.reload();
   }
